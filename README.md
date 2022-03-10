@@ -1,2 +1,6 @@
-# ethernauts-solutions
-Repository containing solutions while doing ethernauts
+ # ethernaut solutions
+
+## 1. Fallback
+
+
+
