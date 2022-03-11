@@ -86,6 +86,19 @@ await contract.transfer(Instance ID, 21)
 We are presented with two contracts in the given code one being the Delegate and the other the Delegation contract. We are given three hints to look into the ```delegatecall()``` function that is the Delegation contract, the fallback function it is used in, and method IDs.
 
 Going off these hints when we deep dive into just what ```delegatecall``` does we find that it allows us to pass the ```msg.data``` along to the Delegate contract. This is where the method ID comes into play, using the command ```web3.eth.abi.encodeFunctionSignature({name: 'pwn', type: 'function', inputs: []})``` and set it equal to some arbitrary variable to be used later we can get the method ID of the function ```pwn()``` that can be passed as our data into the fallback function to allow us to execute it to set our address to be the owner. After all this we can simply do ```await contract.sendTransaction({data: 'pwn function method ID'})``` to allow us to become the contract owner.
+## 7. Force
+At first glance I was a bit confused on how to go about this but after looking into some hints all it requires is us to create a contract that calls ```selfdestruct()``` to our ethernaut instance address. Using a constructor to use ```selfdestruct``` on the target address is better than a function because we can specify a value when deploying through remix.
+```
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.6.0;
+
+contract ForceAttack {
+    constructor(address payable _victim) public payable {
+        selfdestruct(_victim);
+    }
+}
+```
+
 
 
 
