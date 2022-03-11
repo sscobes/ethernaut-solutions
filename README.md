@@ -75,6 +75,13 @@ contract TelephoneHack {
     }
 }
 ```
+## 5. Token
+This is a basic level that shows that without using Openzeppelin's SafeMath that your contract is vulnerable to overflow attacks on unsigned variables.
+
+This one command allows us to steal tokens from the contract:
+```
+await contract.transfer(Instance ID, 21)
+```
 
 
 
