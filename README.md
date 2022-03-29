@@ -155,3 +155,5 @@ contract Building {
     }
 }
 ```
+## 12. Privacy
+Looking at the contract given we see that the data is set the key for the ```unlock()``` function. From previous levels we know that we can read any value from storage on ethereum regardless of being public or private. We can use ```var key32 = await web3.eth.getStorageAt(Instance ID, 5)``` to get the data stored in ```data[2]```, but this value is stored as 32 bytes and have to cast the value to 16 bytes using ```var key16 = key32.slice(0,34)``` we use 34 here to account for the 0x prefix. Lastly after doing all of this we can simply call ```await contract.unlock(key16)``` in the console to unlock the contract and proceed to the next level.
